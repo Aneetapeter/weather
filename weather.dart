@@ -5,6 +5,8 @@ void main() {
 }
 
 class WeatherApp extends StatelessWidget {
+  const WeatherApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -15,6 +17,8 @@ class WeatherApp extends StatelessWidget {
 }
 
 class WeatherHomePage extends StatefulWidget {
+  const WeatherHomePage({super.key});
+
   @override
   State<WeatherHomePage> createState() => _WeatherHomePageState();
 }
@@ -79,6 +83,33 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
     });
   }
 
+  void _logout() {
+    showDialog(
+      context: context,
+      builder:
+          (context) => AlertDialog(
+            title: const Text("Logout"),
+            content: const Text("Are you sure you want to log out?"),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text("Cancel"),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  ScaffoldMessenger.of(
+                    context,
+                  ).showSnackBar(const SnackBar(content: Text("Logged out")));
+                  // Add your actual logout logic here.
+                },
+                child: const Text("Logout"),
+              ),
+            ],
+          ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -107,13 +138,25 @@ class _WeatherHomePageState extends State<WeatherHomePage> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      IconButton(
-                        icon: const Icon(
-                          Icons.add_circle_outline,
-                          color: Colors.white,
-                          size: 28,
-                        ),
-                        onPressed: _addDistrict,
+                      Row(
+                        children: [
+                          IconButton(
+                            icon: const Icon(
+                              Icons.logout,
+                              color: Colors.white,
+                              size: 28,
+                            ),
+                            onPressed: _logout,
+                          ),
+                          IconButton(
+                            icon: const Icon(
+                              Icons.add_circle_outline,
+                              color: Colors.white,
+                              size: 28,
+                            ),
+                            onPressed: _addDistrict,
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -154,7 +197,7 @@ class WeatherCard extends StatelessWidget {
   final String city;
   final String temperature;
 
-  const WeatherCard({required this.city, required this.temperature});
+  const WeatherCard({super.key, required this.city, required this.temperature});
 
   @override
   Widget build(BuildContext context) {
@@ -178,3 +221,4 @@ class WeatherCard extends StatelessWidget {
     );
   }
 }
+
